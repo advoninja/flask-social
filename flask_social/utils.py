@@ -33,7 +33,7 @@ def get_authorize_callback(endpoint, provider_id):
     param: endpoint: Absolute path to append to the application's host
     """
     endpoint_prefix = config_value('BLUEPRINT_NAME')
-    url = url_for(endpoint_prefix + '.' + endpoint, provider_id=provider_id)
+    url = url_for(endpoint_prefix + '.' + endpoint, provider_id=provider_id, _scheme='https')
     return request.url_root[:-1] + url
 
 
