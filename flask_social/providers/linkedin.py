@@ -52,7 +52,7 @@ def get_connection_values(response, **kwargs):
         return None
 
     access_token = response['access_token']
-    expires_in = response['expires_in']
+    expires_in = response['expires_in']ghf
 
     expires_at = int(time.time()) + expires_in
     auth = linkedin.LinkedInAuthentication(None, None, None, None)
@@ -61,7 +61,8 @@ def get_connection_values(response, **kwargs):
     profile = api.get_profile(selectors=selectors)
 
     # profile_url = profile['siteStandardProfileRequest']['url']
-    profile_url = ''
+    url_linkedin = "https://www.linkedin.com/"
+    profile_url = url_linkedin + profile['vanityName']
     image_url = profile['pictureUrl'] if 'pictureUrl' in profile else '' 
 
     return dict(
@@ -70,7 +71,7 @@ def get_connection_values(response, **kwargs):
         access_token=access_token,
         secret=None,
         display_name= profile['localizedFirstName'],
-        full_name ='%s %s' % (profile['localizedFirstName'], profile['localizedLastName']),
+        full_name = '%s %s' % (profile['localizedFirstName'], profile['localizedLastName']),
         profile_url=profile_url,
         image_url=image_url,
         expires_at=expires_at,

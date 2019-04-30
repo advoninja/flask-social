@@ -60,7 +60,9 @@ def get_connection_values(response, **kwargs):
     api = linkedin.LinkedInApplication(auth)
     profile = api.get_profile(selectors=selectors)
 
-    profile_url = profile['siteStandardProfileRequest']['url']
+    # profile_url = profile['siteStandardProfileRequest']['url']
+    url_linkedin = "https://www.linkedin.com/in/"
+    profile_url = url_linkedin + profile['vanityName']
     image_url = profile['pictureUrl'] if 'pictureUrl' in profile else '' 
 
     return dict(
@@ -68,8 +70,8 @@ def get_connection_values(response, **kwargs):
         provider_user_id=profile['id'],
         access_token=access_token,
         secret=None,
-        display_name=profile['firstName'],
-        full_name = '%s %s' % (profile['firstName'], profile['lastName']),
+        display_name= profile['localizedFirstName'],
+        full_name = '%s %s' % (profile['localizedFirstName'], profile['localizedLastName']),
         profile_url=profile_url,
         image_url=image_url,
         expires_at=expires_at,
