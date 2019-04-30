@@ -52,7 +52,7 @@ def get_connection_values(response, **kwargs):
         return None
 
     access_token = response['access_token']
-    expires_in = response['expires_in']ghf
+    expires_in = response['expires_in']
 
     expires_at = int(time.time()) + expires_in
     auth = linkedin.LinkedInAuthentication(None, None, None, None)
