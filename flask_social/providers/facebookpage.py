@@ -44,6 +44,9 @@ def get_connection_values(response, **kwargs):
     if not response:
         return None
 
+    print "ReSpOnSe"
+    print response
+
     access_token = response['access_token']
     graph = facebook.GraphAPI(access_token,version='2.7')
     profile = graph.get_object("me")
