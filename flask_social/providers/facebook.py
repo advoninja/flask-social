@@ -44,7 +44,6 @@ def get_connection_values(response, **kwargs):
     if not response:
         return None
     try:
-        print response
         access_token = response['access_token']
     except Exception as e:
         print response

@@ -10,13 +10,9 @@
 """
 
 from __future__ import absolute_import
-from celery.utils.log import get_task_logger
-import logging
 
 
 import facebook
-logger = get_task_logger(__name__)
-logger.setLevel(logging.INFO)
 
 config = {
     'id': 'facebookpage',
@@ -49,11 +45,12 @@ def get_connection_values(response, **kwargs):
     if not response:
         return None
 
-    print "ReSpOnSe"
-    print response
-    logger.info("Response is {}".format(response))
+    try:
+        access_token = response['access_token']
+    except Exception as e:
+        print response
+        raise e
 
-    access_token = response['access_token']
     graph = facebook.GraphAPI(access_token,version='2.7')
     profile = graph.get_object("me")
     profile_url = "http://facebook.com/profile.php?id=%s" % profile['id']
