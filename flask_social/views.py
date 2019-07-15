@@ -155,13 +155,25 @@ def connect_handler(cv, provider):
 
 def connect_callback(provider_id):
     print "Enter connect_callback"
+    print "provider_id"
+    print provider_id
     provider = get_provider_or_404(provider_id)
+    print "provider"
+    print provider
+
 
     def connect(response):
+        print "connect_callback inner response"
+        print response
         cv = get_connection_values_from_oauth_response(provider, response)
+        print "connect cv"
+        print cv
         return cv
 
     cv = provider.authorized_handler(connect)()
+    print "connect_callback authorized_handler"
+    print cv
+
     if cv is None:
         do_flash('Access was denied by %s' % provider.name, 'error')
         return redirect(get_url(config_value('CONNECT_DENY_VIEW')))
