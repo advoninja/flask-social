@@ -160,6 +160,7 @@ def connect_handler(cv, provider):
 
 def connect_callback(provider_id):
     print "Enter connect_callback"
+    print "session {}".format(session)
     print "provider_id"
     print provider_id
     provider = get_provider_or_404(provider_id)
