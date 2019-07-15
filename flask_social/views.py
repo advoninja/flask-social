@@ -56,10 +56,15 @@ def connect(provider_id):
     """Starts the provider connection OAuth flow"""
     print "Enter @login_required connect "
     provider = get_provider_or_404(provider_id)
+    print "provider in connect {}".format(provider)
     callback_url = get_authorize_callback('connect', provider_id)
+    print "callback_url in connect {}".format(callback_url)
     allow_view = get_url(config_value('CONNECT_ALLOW_VIEW'))
+    print "allow_view in connect {}".format(allow_view)
     pc = request.form.get('next', allow_view)
+    print "pc in connect {}".format(pc)
     session[config_value('POST_OAUTH_CONNECT_SESSION_KEY')] = pc
+    print "session in connect {}".format(session)
     return provider.authorize(callback_url)
 
 
