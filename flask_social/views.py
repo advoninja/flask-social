@@ -155,7 +155,10 @@ def connect_handler(cv, provider):
                                get_url(config_value('CONNECT_ALLOW_VIEW')))
 
     do_flash(*msg)
-    return redirect(redirect_url)
+    response = redirect(redirect_url)
+    response.set_cookie('custom_message', msg[0])
+    return response
+    # return redirect(redirect_url) 
 
 
 def connect_callback(provider_id):
@@ -181,8 +184,12 @@ def connect_callback(provider_id):
     print cv
 
     if cv is None:
-        do_flash('Access was denied by %s' % provider.name, 'error')
-        return redirect(get_url(config_value('CONNECT_DENY_VIEW')))
+        msg = ('Access was denied by %s' % provider.name, 'error')
+        do_flash(*msg)
+        response = redirect(get_url(config_value('CONNECT_DENY_VIEW')))
+        response.set_cookie('custom_message', msg[0])
+        return response
+        # return redirect(get_url(config_value('CONNECT_DENY_VIEW')))
 
     return connect_handler(cv, provider)
 
