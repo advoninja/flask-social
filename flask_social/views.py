@@ -184,7 +184,7 @@ def connect_callback(provider_id):
     print cv
 
     if cv is None:
-        msg = ('Access was denied by %s' % provider.name, 'error')
+        msg = ('Marketbeam was not able to add this %s account.  Please try again' % provider.name, 'error')
         do_flash(*msg)
         response = redirect(get_url(config_value('CONNECT_DENY_VIEW')))
         response.set_cookie('custom_message', msg[0])
