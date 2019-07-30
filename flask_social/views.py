@@ -147,7 +147,7 @@ def connect_handler(cv, provider):
                                 connection=connection)
     else:
         msg = ('A connection is already established with %s '
-               'to your account' % provider.name, 'notice')
+               'to your account' % provider.name, 'danger')
         connection_failed.send(current_app._get_current_object(),
                                user=current_user._get_current_object())
 
