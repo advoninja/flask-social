@@ -94,7 +94,7 @@ def remove_all_connections(provider_id):
                                 user=current_user._get_current_object(),
                                 provider_id=provider_id)
     else:
-        msg = ('Unable to remove connection to %(provider)s' % ctx, 'error')
+        msg = ('Unable to remove connection to %(provider)s' % ctx, 'danger')
 
     do_flash(*msg)
     return redirect(request.referrer)
@@ -121,7 +121,7 @@ def remove_connection(provider_id, provider_user_id):
                                 user=current_user._get_current_object(),
                                 provider_id=provider_id)
     else:
-        msg = ('Unabled to remove connection to %(provider)s' % ctx, 'error')
+        msg = ('Unabled to remove connection to %(provider)s' % ctx, 'danger')
 
     do_flash(*msg)
     return redirect(request.referrer or get_post_login_redirect())
@@ -157,6 +157,7 @@ def connect_handler(cv, provider):
     do_flash(*msg)
     response = redirect(redirect_url)
     response.set_cookie('custom_message', msg[0])
+    response.set_cookie('custom_type', msg[1])
     return response
     # return redirect(redirect_url) 
 
@@ -184,10 +185,12 @@ def connect_callback(provider_id):
     print cv
 
     if cv is None:
-        msg = ('Marketbeam was not able to add this %s account.  Please try again' % provider.name, 'error')
+        msg = ('Marketbeam was not able to add this %s account.  Please try again' % provider.name, 'danger')
         do_flash(*msg)
         response = redirect(get_url(config_value('CONNECT_DENY_VIEW')))
         response.set_cookie('custom_message', msg[0])
+        response.set_cookie('custom_type', msg[1])
+
         return response
         # return redirect(get_url(config_value('CONNECT_DENY_VIEW')))
 
@@ -225,7 +228,7 @@ def login_handler(response, provider, query):
 
     next = get_url(_security.login_manager.login_view)
     msg = '%s account not associated with an existing user' % provider.name
-    do_flash(msg, 'error')
+    do_flash(msg, 'danger')
     return redirect(next)
 
 
@@ -244,7 +247,7 @@ def login_callback(provider_id):
 
         if response is None:
             do_flash('Access was denied to your %s '
-                     'account' % provider.name, 'error')
+                     'account' % provider.name, 'danger')
             return _security.login_manager.unauthorized(), None
 
         query = dict(provider_user_id=module.get_provider_user_id(response),
