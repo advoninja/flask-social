@@ -96,7 +96,7 @@ def remove_all_connections(provider_id):
     else:
         msg = ('Unable to remove connection to %(provider)s' % ctx, 'danger')
 
-    do_flash(*msg)
+    # do_flash(*msg)
     return redirect(request.referrer)
 
 
@@ -123,7 +123,7 @@ def remove_connection(provider_id, provider_user_id):
     else:
         msg = ('Unabled to remove connection to %(provider)s' % ctx, 'danger')
 
-    do_flash(*msg)
+    # do_flash(*msg)
     return redirect(request.referrer or get_post_login_redirect())
 
 
@@ -154,7 +154,7 @@ def connect_handler(cv, provider):
     redirect_url = session.pop(config_value('POST_OAUTH_CONNECT_SESSION_KEY'),
                                get_url(config_value('CONNECT_ALLOW_VIEW')))
 
-    do_flash(*msg)
+    # do_flash(*msg)
     response = redirect(redirect_url)
     response.set_cookie('custom_message', msg[0])
     response.set_cookie('custom_type', msg[1])
@@ -186,7 +186,7 @@ def connect_callback(provider_id):
 
     if cv is None:
         msg = ('Marketbeam was not able to add this %s account.  Please try again' % provider.name, 'danger')
-        do_flash(*msg)
+        # do_flash(*msg)
         response = redirect(get_url(config_value('CONNECT_DENY_VIEW')))
         response.set_cookie('custom_message', msg[0])
         response.set_cookie('custom_type', msg[1])
