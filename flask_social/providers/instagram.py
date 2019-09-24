@@ -5,7 +5,7 @@
 
     This module contains the Flask-Social instagram code
 
-    :copyright: (c) 2019 by MSKE(Shameem).
+    :copyright: (c) 2019 by MSKE.
     :license: MIT, see LICENSE for more details.
 """
 
@@ -24,7 +24,7 @@ config = {
     'access_token_url': '/oauth/access_token',
     'authorize_url': 'https://www.facebook.com/dialog/oauth',
     'request_token_params': {
-        'scope': 'email, instagram_basic, pages_show_list'
+        'scope': 'instagram_basic, pages_show_list'
     }
 }
 
@@ -35,8 +35,13 @@ def get_api(connection, **kwargs):
 def get_provider_user_id(response, **kwargs):
     if response:
         graph = facebook.GraphAPI(response['access_token'],version='2.7')
-        profile = graph.get_object("me")
-        return profile['id']
+        fbpages = graph.get_object("me/accounts")
+        page_id = fbpages.get('data')[0].get('id')
+        instagram_business = graph.get_object("%s?fields=instagram_business_account" %page_id)
+        if 'instagram_business_account' not in instagram_business:
+            return None
+        instagram_id = instagram_business.get('instagram_business_account').get('id')
+        return instagram_id
     return None
 
 
@@ -51,30 +56,26 @@ def get_connection_values(response, **kwargs):
         raise e
 
     graph = facebook.GraphAPI(access_token,version='2.7')
-    profile = graph.get_object("me")
-    profilet = graph.get_object("me/accounts")
-    print profilet
-    page_id = profilet.get('data')[0].get('id')
-    profilett = graph.get_object("%s?fields=instagram_business_account" %page_id)
-    print profilett
-    instagram_id = profilett.get('instagram_business_account').get('id')
-    profilettt = graph.get_object("%s?fields=username,name,profile_picture_url" %instagram_id)
-    print profilettt
-    username = profilettt.get('username')
-    profile_url = "http://www.Instagram.com/%s" % username
-    image_url = profilettt.get('profile_picture_url')
-    print profile
+    fbpages = graph.get_object("me/accounts")
+    page_id = fbpages.get('data')[0].get('id')
+    instagram_business = graph.get_object("%s?fields=instagram_business_account" %page_id)
+    if 'instagram_business_account' not in instagram_business:
+        return None
+    instagram_id = instagram_business.get('instagram_business_account').get('id')
+    instagram_user = graph.get_object("%s?fields=username,name,profile_picture_url" %instagram_id)
+    profile_url = "http://www.Instagram.com/%s" % instagram_user.get('username')
+    image_url = instagram_user.get('profile_picture_url')
 
     return dict(
         provider_id=config['id'],
-        provider_user_id=profile['id'],
+        provider_user_id=instagram_id,
         access_token=access_token,
         secret=None,
-        display_name=profile.get('username', None),
-        full_name = profile.get('name', None),
+        display_name=instagram_user.get('username'),
+        full_name = instagram_user.get('name'),
         profile_url=profile_url,
         image_url=image_url,
-        email=profile.get('email', '')
+        email= ''
     )
 
 def get_token_pair_from_response(response):
