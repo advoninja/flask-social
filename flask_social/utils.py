@@ -42,8 +42,11 @@ def get_authorize_callback(endpoint, provider_id):
 def get_connection_values_from_oauth_response(provider, oauth_response):
     if oauth_response is None:
         return None
+    print "provider social", provider
+    print "oauth_response social", oauth_response
 
     module = import_module(provider.module)
+    print "module social", module
 
     return module.get_connection_values(
         oauth_response,
