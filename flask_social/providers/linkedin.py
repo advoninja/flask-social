@@ -14,7 +14,8 @@ config = {
     'access_token_url': 'https://www.linkedin.com/oauth/v2/accessToken',
     'authorize_url': 'https://www.linkedin.com/oauth/v2/authorization',
     'request_token_params': {
-        'state': 'HSSRJKL02318akybgj857'
+        'state': 'HSSRJKL02318akybgj857',
+        'scope': linkedin.PERMISSIONS.enums.values()
     }
 }
 
@@ -65,7 +66,8 @@ def get_connection_values(response, **kwargs):
 
     # profile_url = profile['siteStandardProfileRequest']['url']
     url_linkedin = "https://www.linkedin.com/"
-    profile_url = url_linkedin + profile['vanityName']
+    # profile_url = url_linkedin + profile['vanityName']
+    profile_url = ""
     image_url = profile['pictureUrl'] if 'pictureUrl' in profile else '' 
 
     return dict(
