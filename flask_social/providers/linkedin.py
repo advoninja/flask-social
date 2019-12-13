@@ -65,9 +65,9 @@ def get_connection_values(response, **kwargs):
     profile = api.get_profile(selectors=selectors)
 
     # profile_url = profile['siteStandardProfileRequest']['url']
-    url_linkedin = "https://www.linkedin.com/"
-    # profile_url = url_linkedin + profile['vanityName']
-    profile_url = ""
+    url_linkedin = "https://www.linkedin.com/in/"
+    profile_url = url_linkedin + profile['vanityName']
+    # profile_url = ""
     image_url = profile['pictureUrl'] if 'pictureUrl' in profile else '' 
 
     return dict(
