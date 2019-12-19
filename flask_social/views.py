@@ -43,7 +43,6 @@ def _commit(response=None):
 @anonymous_user_required
 def login(provider_id):
     """Starts the provider login OAuth flow"""
-    print "Enter @anonymous_user_required login "
     provider = get_provider_or_404(provider_id)
     callback_url = get_authorize_callback('login', provider_id)
     post_login = request.form.get('next', get_post_login_redirect())
@@ -54,17 +53,11 @@ def login(provider_id):
 @login_required
 def connect(provider_id):
     """Starts the provider connection OAuth flow"""
-    print "Enter @login_required connect "
     provider = get_provider_or_404(provider_id)
-    print "provider in connect {}".format(provider)
     callback_url = get_authorize_callback('connect', provider_id)
-    print "callback_url in connect {}".format(callback_url)
     allow_view = get_url(config_value('CONNECT_ALLOW_VIEW'))
-    print "allow_view in connect {}".format(allow_view)
     pc = request.form.get('next', allow_view)
-    print "pc in connect {}".format(pc)
     session[config_value('POST_OAUTH_CONNECT_SESSION_KEY')] = pc
-    print "session in connect {}".format(session)
     return provider.authorize(callback_url)
 
 
@@ -133,7 +126,6 @@ def connect_handler(cv, provider):
     :param connection_values: A dictionary containing the connection values
     :param provider_id: The provider ID the connection shoudl be made to
     """
-    print "Enter connect_handler"
     cv.setdefault('user_id', current_user.get_id())
     connection = _datastore.find_connection(
         provider_id=cv['provider_id'], provider_user_id=cv['provider_user_id'])
@@ -163,26 +155,14 @@ def connect_handler(cv, provider):
 
 
 def connect_callback(provider_id):
-    print "Enter connect_callback"
-    print "session {}".format(session)
-    print "provider_id"
-    print provider_id
     provider = get_provider_or_404(provider_id)
-    print "provider"
-    print provider
 
 
     def connect(response):
-        print "connect_callback inner response"
-        print response
         cv = get_connection_values_from_oauth_response(provider, response)
-        print "connect cv"
-        print cv
         return cv
 
     cv = provider.authorized_handler(connect)()
-    print "connect_callback authorized_handler"
-    print cv
 
     if cv is None:
         msg = ('Marketbeam was not able to add this %s account.  Please try again' % provider.name, 'danger')
@@ -200,7 +180,6 @@ def connect_callback(provider_id):
 @anonymous_user_required
 def login_handler(response, provider, query):
     """Shared method to handle the signin process"""
-    print "Enter @anonymous_user_required login_handler"
 
     connection = _datastore.find_connection(**query)
 
@@ -233,7 +212,6 @@ def login_handler(response, provider, query):
 
 
 def login_callback(provider_id):
-    print "Enter login_callback"
     try:
         provider = _social.providers[provider_id]
         module = import_module(provider.module)
@@ -241,7 +219,6 @@ def login_callback(provider_id):
         abort(404)
 
     def login(response):
-        print "Enter login inner"
         _logger.debug('Received login response from '
                       '%s: %s' % (provider.name, response))
 
@@ -262,7 +239,6 @@ def login_callback(provider_id):
 
 
 def create_blueprint(state, import_name):
-    print "Enter create_blueprint"
     bp = Blueprint(state.blueprint_name, import_name,
                    url_prefix=state.url_prefix,
                    template_folder='templates')

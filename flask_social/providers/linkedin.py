@@ -24,7 +24,6 @@ selectors = ('id', 'first-name', 'last-name', 'email-address',
 
 
 def get_api(connection, **kwargs):
-    print "Enter linkedin get_api"
     auth = linkedin.LinkedInAuthentication(
         kwargs.get('consumer_key'),
         kwargs.get('consumer_secret'),
@@ -39,7 +38,6 @@ def get_api(connection, **kwargs):
 
 
 def get_provider_user_id(response, **kwargs):
-    print "Enter linkedin geget_provider_user_idt_api"
     if response:
         auth = linkedin.LinkedInAuthentication(None, None, None, None)
         auth.token = AccessToken(response['access_token'], response['expires_in'])
@@ -51,7 +49,6 @@ def get_provider_user_id(response, **kwargs):
 
 
 def get_connection_values(response, **kwargs):
-    print "Enter linkedin get_connection_values"
     if not response:
         return None
 
@@ -86,7 +83,6 @@ def get_connection_values(response, **kwargs):
 
 
 def get_token_pair_from_reponse(response):
-    print "Enter linkedin get_token_pair_from_reponse"
     return dict(
         access_token=response.get('access_token', None),
         secret=None

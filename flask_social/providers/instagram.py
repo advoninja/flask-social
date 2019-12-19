@@ -48,7 +48,6 @@ def get_provider_user_id(response, **kwargs):
 def get_connection_values(response, **kwargs):
     if not response:
         return None
-    print "access_token social", response['access_token']
 
     try:
         access_token = response['access_token']
@@ -58,10 +57,8 @@ def get_connection_values(response, **kwargs):
 
     graph = facebook.GraphAPI(access_token,version='2.7')
     fbpages = graph.get_object("me/accounts")
-    print "fbpages social", fbpages
     page_id = fbpages.get('data')[0].get('id')
     instagram_business = graph.get_object("%s?fields=instagram_business_account" %page_id)
-    print "instagram_business social", instagram_business
     if 'instagram_business_account' not in instagram_business:
         return None
     instagram_id = instagram_business.get('instagram_business_account').get('id')
