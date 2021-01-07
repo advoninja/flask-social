@@ -8,6 +8,7 @@
     :copyright: (c) 2012 by Matt Wright.
     :license: MIT, see LICENSE for more details.
 """
+from __future__ import print_function
 import collections
 
 from importlib import import_module
@@ -42,7 +43,7 @@ def get_authorize_callback(endpoint, provider_id):
 def get_connection_values_from_oauth_response(provider, oauth_response):
     if oauth_response is None:
         return None
-    print "oauth_response social", oauth_response
+    print("oauth_response social", oauth_response)
 
     module = import_module(provider.module)
 
@@ -61,7 +62,7 @@ def get_config(app):
 
     :param app: The application to inspect
     """
-    items = app.config.items()
+    items = list(app.config.items())
     prefix = 'SOCIAL_'
 
     def strip_prefix(tup):
@@ -71,7 +72,7 @@ def get_config(app):
 
 
 def update_recursive(d, u):
-    for k, v in u.iteritems():
+    for k, v in u.items():
         if isinstance(v, collections.Mapping):
             r = update_recursive(d.get(k, {}), v)
             d[k] = r

@@ -10,6 +10,7 @@
 """
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import facebook
 
@@ -46,7 +47,7 @@ def get_connection_values(response, **kwargs):
     try:
         access_token = response['access_token']
     except Exception as e:
-        print response
+        print(response)
         raise e
     graph = facebook.GraphAPI(access_token,version='2.7')
     profile = graph.get_object("me")
