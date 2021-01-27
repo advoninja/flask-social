@@ -15,7 +15,7 @@ config = {
     'authorize_url': 'https://www.linkedin.com/oauth/v2/authorization',
     'request_token_params': {
         'state': 'HSSRJKL02318akybgj857',
-        'scope': linkedin.PERMISSIONS.enums.values()
+        'scope': list(linkedin.PERMISSIONS.enums.values())
     }
 }
 
